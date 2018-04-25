@@ -4,7 +4,8 @@ import (
 	"fmt"
 
 	"github.com/yuqingc/ryze/pkg/hello"
-	"github.com/yuqingc/ryze/pkg/signup"
+	// "github.com/yuqingc/ryze/pkg/signup"
+	"github.com/yuqingc/ryze/pkg/login"
 
 	"github.com/gin-gonic/gin"
 )
@@ -36,17 +37,18 @@ func main() {
 	// 	fmt.Println(err)
 	// }
 
-	writeRes, err := signup.WriteUserToDB("admin", "pwd123123")
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(writeRes)
+	// writeRes, err := signup.WriteUserToDB("admin", "pwd123123")
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+	// fmt.Println(writeRes)
 
 	router := gin.Default()
 
 	api := router.Group("/api")
 	{
 		api.GET("/hello", hello.HandleHello)
+		api.POST("login", login.HandleLogin)
 	}
 
 	router.Run(":8080")
