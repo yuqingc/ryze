@@ -46,4 +46,7 @@ func main() {
 		}
 		fmt.Println(name, password)
 	}
+
+	str := fmt.Sprintf("hello, %s !", "world")
+	fmt.Println(str)
 }
