@@ -11,15 +11,16 @@ import (
 )
 
 func main() {
-	fmt.Println("main")
-	fk()
+	fmt.Println("Ryze is going...")
+	sayhi()
 
 	router := gin.Default()
 
 	api := router.Group("/api")
 	{
 		api.GET("/hello", hello.HandleHello)
-		api.POST("login", auth.HandleLogin)
+		api.POST("/login", auth.HandleLogin)
+		api.GET("/varify_token", auth.HandleVarifyToken)
 	}
 
 	router.Run(":8080")

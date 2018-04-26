@@ -2,11 +2,12 @@ package auth
 
 import (
 	"fmt"
+	"net/http"
+	"strings"
 
 	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
 )
-
-const testToken string = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MjQ4MzAzMzksImlhdCI6MTUyNDc0MzkzOSwiaXNzIjoiUnl6ZS9nZW5lcmFsIiwidXNyIjoiYWRtaW4ifQ.BqF34UJOm37DsXitIDJ5MSs_VXsZpu8D0gS9pSL9dcc`
 
 // IsValidToken checks if a token is valid
 func IsValidToken(tokenString string) bool {
@@ -18,14 +19,25 @@ func IsValidToken(tokenString string) bool {
 		return []byte("my-secret"), nil
 	})
 
-	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		fmt.Println(claims)
+	if err != nil {
+		fmt.Println(err)
+		return false
+	}
+
+	if _, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		return true
 	}
-	fmt.Println(err)
+
 	return false
 }
 
-func init() {
-	fmt.Println("init, ", IsValidToken(testToken))
+// HandleVarifyToken is user for /api/veryfy_token
+func HandleVarifyToken(c *gin.Context) {
+	userToken := c.GetHeader("Authorization")
+	trimmedTokenString := strings.TrimPrefix(userToken, `Bearer access_token":"`)
+	if IsValidToken(trimmedTokenString) {
+		c.String(http.StatusOK, "access_token is valid")
+	} else {
+		c.AbortWithStatus(http.StatusUnauthorized)
+	}
 }

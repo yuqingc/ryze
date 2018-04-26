@@ -2,6 +2,6 @@ package main
 
 import "fmt"
 
-func fk() {
-	fmt.Println("fk")
+func sayhi() {
+	fmt.Println("hi!")
 }
