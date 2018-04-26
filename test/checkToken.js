@@ -1,6 +1,6 @@
 const http = require('http')
 
-const token = `access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MjQ4NDE1MDIsImlhdCI6MTUyNDc1NTEwMiwiaXNzIjoiUnl6ZS9nZW5lcmFsIiwidXNyIjoiYWRtaW4ifQ.OLyNX2mVsxZlY50y5RHb1eWx3vsomYfr1HjAMl-zmdQ`;
+const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MjQ4NDE1MDIsImlhdCI6MTUyNDc1NTEwMiwiaXNzIjoiUnl6ZS9nZW5lcmFsIiwidXNyIjoiYWRtaW4ifQ.OLyNX2mVsxZlY50y5RHb1eWx3vsomYfr1HjAMl-zmdQ`;
 
 const badtoken = `fdafadadfasdf`;
 

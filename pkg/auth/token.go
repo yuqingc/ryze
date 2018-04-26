@@ -34,7 +34,8 @@ func IsValidToken(tokenString string) bool {
 // HandleVarifyToken is user for /api/veryfy_token
 func HandleVarifyToken(c *gin.Context) {
 	userToken := c.GetHeader("Authorization")
-	trimmedTokenString := strings.TrimPrefix(userToken, `Bearer access_token":"`)
+	fmt.Println("usertoken, ", userToken)
+	trimmedTokenString := strings.TrimPrefix(userToken, `Bearer `)
 	if IsValidToken(trimmedTokenString) {
 		c.String(http.StatusOK, "access_token is valid")
 	} else {
