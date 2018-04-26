@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 
-	"github.com/yuqingc/ryze/pkg/signup"
+	"github.com/yuqingc/ryze/pkg/auth"
 )
 
 func main() {
-	writeRes, err := signup.WriteUserToDB("admin", "pwd123456")
+	writeRes, err := auth.WriteUserToDB("admin", "pwd123456")
 	if err != nil {
 		fmt.Println(err)
 	}

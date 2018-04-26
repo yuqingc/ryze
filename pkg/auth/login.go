@@ -1,4 +1,4 @@
-package login
+package auth
 
 import (
 	"fmt"
@@ -16,6 +16,8 @@ import (
 func HandleLogin(c *gin.Context) {
 	cUsername := c.PostForm("username")
 	cPassword := c.PostForm("password")
+	nowSec := time.Now().Unix()
+	expireSec := int64(3600 * 24)
 	var dbPassword string
 	db, err := db.OpenMySQL()
 	if err != nil {
@@ -49,8 +51,8 @@ func HandleLogin(c *gin.Context) {
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"iss": "Ryze/general",
-		"exp": 3600 * 24,
-		"iat": time.Now().Unix(),
+		"exp": nowSec + expireSec,
+		"iat": nowSec,
 		"usr": cUsername,
 	})
 	mySecret := []byte("my-secret")
@@ -58,7 +60,9 @@ func HandleLogin(c *gin.Context) {
 	if err == nil {
 		c.JSON(http.StatusOK, gin.H{
 			"username":     cUsername,
+			"token_type":   "JWT",
 			"access_token": tokenString,
+			"expires_in":   expireSec,
 		})
 	} else {
 		c.String(http.StatusBadRequest, err.Error())

@@ -1,4 +1,4 @@
-package signup
+package auth
 
 import (
 	"database/sql"

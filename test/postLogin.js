@@ -4,7 +4,7 @@ const querystring = require("querystring");
 // real password pwd123456
 const postData = querystring.stringify({
     username: 'admin',
-    password: 'pwd1234567',
+    password: 'pwd123456',
 });
 
 const req = http.request(
