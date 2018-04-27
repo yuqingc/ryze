@@ -36,6 +36,7 @@ func HandleVarifyToken(c *gin.Context) {
 	userToken := c.GetHeader("Authorization")
 	fmt.Println("usertoken, ", userToken)
 	trimmedTokenString := strings.TrimPrefix(userToken, `Bearer `)
+	trimmedTokenString = strings.TrimSpace(trimmedTokenString)
 	if IsValidToken(trimmedTokenString) {
 		c.String(http.StatusOK, "access_token is valid")
 	} else {

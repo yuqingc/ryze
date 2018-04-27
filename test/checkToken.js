@@ -11,7 +11,7 @@ const req = http.request(
         path: '/api/varify_token',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer  ${token}`
         }
     },
     (res) => {
