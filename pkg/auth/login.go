@@ -18,7 +18,7 @@ func HandleLogin(c *gin.Context) {
 	cPassword := c.PostForm("password")
 	nowSec := time.Now().Unix()
 	expireSec := int64(3600 * 24)
-	var dbPassword string
+	var dbUsername, dbPassword string
 	db, err := db.OpenMySQL()
 	if err != nil {
 		fmt.Println(err)
@@ -26,7 +26,8 @@ func HandleLogin(c *gin.Context) {
 		return
 	}
 	defer db.Close()
-	queryBody := fmt.Sprintf("select password from passwd where username='%s'", cUsername)
+	// TODO: prevent SQL injection
+	queryBody := fmt.Sprintf("select * from passwd where username='%s'", cUsername)
 	passwdRow, err := db.Query(queryBody)
 	if err != nil {
 		fmt.Println(err)
@@ -35,12 +36,13 @@ func HandleLogin(c *gin.Context) {
 	}
 	defer passwdRow.Close()
 	for passwdRow.Next() {
-		err = passwdRow.Scan(&dbPassword)
+		err = passwdRow.Scan(&dbUsername, &dbPassword)
 		if err != nil {
 			fmt.Println(err)
 			c.String(http.StatusInternalServerError, err.Error())
 			return
 		}
+		fmt.Println(dbUsername, dbPassword)
 
 	}
 	err = bcrypt.CompareHashAndPassword([]byte(dbPassword), []byte(cPassword))
