@@ -16,6 +16,7 @@
 # Govender packages
 /vendor/*
 !/vendor/vendor.json
+_vendor-*
 
 # VSCode files
 debug
