@@ -42,6 +42,7 @@ func HandleLogin(c *gin.Context) {
 			c.String(http.StatusInternalServerError, err.Error())
 			return
 		}
+		// TODO: prevent sql injection & check username with token?
 		fmt.Println(dbUsername, dbPassword)
 
 	}
