@@ -25,7 +25,7 @@ async function main() {
     // real password pwd123456
     // SQL injection
     const postData = querystring.stringify({
-        username: `${username} ' or 'a'='a' '`,
+        username,
         password,
     });
 

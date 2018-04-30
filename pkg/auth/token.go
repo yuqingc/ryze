@@ -9,8 +9,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// IsValidToken checks if a token is valid
-func IsValidToken(tokenString string) bool {
+// IsValidToken checks if a token is valid. If it is valid, the token claims is returned
+func IsValidToken(tokenString string) (jwt.MapClaims, bool) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
@@ -21,14 +21,14 @@ func IsValidToken(tokenString string) bool {
 
 	if err != nil {
 		fmt.Println(err)
-		return false
+		return nil, false
 	}
 
-	if _, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		return true
+	if tokenClaim, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		return tokenClaim, true
 	}
 
-	return false
+	return nil, false
 }
 
 // HandleVarifyToken is user for /api/veryfy_token
@@ -37,7 +37,8 @@ func HandleVarifyToken(c *gin.Context) {
 	fmt.Println("usertoken, ", userToken)
 	trimmedTokenString := strings.TrimPrefix(userToken, `Bearer `)
 	trimmedTokenString = strings.TrimSpace(trimmedTokenString)
-	if IsValidToken(trimmedTokenString) {
+	if tokenClaims, ok := IsValidToken(trimmedTokenString); ok {
+		fmt.Println("tokenClaims is ", tokenClaims)
 		c.String(http.StatusOK, "access_token is valid")
 	} else {
 		c.AbortWithStatus(http.StatusUnauthorized)
