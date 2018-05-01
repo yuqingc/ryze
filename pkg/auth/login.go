@@ -64,7 +64,7 @@ func HandleLogin(c *gin.Context) {
 			"username":     cUsername,
 			"token_type":   "JWT",
 			"access_token": tokenString,
-			"token_exp":   nowSec + expireSec,
+			"token_exp":    nowSec + expireSec,
 		})
 	} else {
 		c.String(http.StatusBadRequest, err.Error())

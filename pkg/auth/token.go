@@ -39,7 +39,7 @@ func HandleVarifyToken(c *gin.Context) {
 	trimmedTokenString = strings.TrimSpace(trimmedTokenString)
 	if tokenClaims, ok := IsValidToken(trimmedTokenString); ok {
 		fmt.Println("tokenClaims is ", tokenClaims)
-		c.String(http.StatusOK, "access_token is valid")
+		c.JSON(http.StatusOK, tokenClaims)
 	} else {
 		c.AbortWithStatus(http.StatusUnauthorized)
 	}
