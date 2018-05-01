@@ -26,9 +26,8 @@ func HandleLogin(c *gin.Context) {
 		return
 	}
 	defer db.Close()
-	// TODO: prevent SQL injection
-	queryBody := fmt.Sprintf("select * from passwd where username='%s'", cUsername)
-	passwdRow, err := db.Query(queryBody)
+	// TODO: prevent SQL injection (done)
+	passwdRow, err := db.Query("select * from passwd where username=?", cUsername)
 	if err != nil {
 		fmt.Println(err)
 		c.String(http.StatusInternalServerError, err.Error())
