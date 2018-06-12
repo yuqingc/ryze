@@ -2,6 +2,7 @@ package auth
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 
@@ -21,15 +22,16 @@ func HandleLogin(c *gin.Context) {
 	var dbUsername, dbPassword string
 	db, err := db.OpenMySQL()
 	if err != nil {
-		fmt.Println(err)
+		log.Printf("fail to open db in login: %v", err)
 		c.String(http.StatusInternalServerError, err.Error())
 		return
 	}
 	defer db.Close()
 	// TODO: prevent SQL injection (done)
+	fmt.Printf("%s is logging in\n", cUsername)
 	passwdRow, err := db.Query("select * from passwd where username=?", cUsername)
 	if err != nil {
-		fmt.Println(err)
+		log.Printf("fail to query: %v", err)
 		c.String(http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -37,17 +39,15 @@ func HandleLogin(c *gin.Context) {
 	for passwdRow.Next() {
 		err = passwdRow.Scan(&dbUsername, &dbPassword)
 		if err != nil {
-			fmt.Println(err)
+			log.Printf("fail to scan row: %v", err)
 			c.String(http.StatusInternalServerError, err.Error())
 			return
 		}
 		// TODO: prevent sql injection & check username with token?
-		fmt.Println(dbUsername, dbPassword)
-
 	}
 	err = bcrypt.CompareHashAndPassword([]byte(dbPassword), []byte(cPassword))
 	if err != nil {
-		fmt.Println(err)
+		fmt.Printf("fail to compare hash and password in login: %v", err)
 		c.String(http.StatusUnauthorized, err.Error())
 		return
 	}
@@ -67,6 +67,7 @@ func HandleLogin(c *gin.Context) {
 			"token_exp":    nowSec + expireSec,
 		})
 	} else {
+		fmt.Printf("fail to generate token: %v", err)
 		c.String(http.StatusBadRequest, err.Error())
 	}
 }
