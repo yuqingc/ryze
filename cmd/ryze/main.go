@@ -27,3 +27,4 @@ func main() {
 }
 
 // docker run -p 3306:3306  --name mt-mysql -e MYSQL_ROOT_PASSWORD=root -d mysql:5.7
+// docker image: dmumatt/ryzedb (private repository)
