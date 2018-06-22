@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/yuqingc/ryze/pkg/auth"
+	"github.com/yuqingc/ryze/pkg/blogs"
 	"github.com/yuqingc/ryze/pkg/hello"
 
 	"github.com/gin-gonic/gin"
@@ -21,6 +22,8 @@ func main() {
 		api.GET("/hello", hello.HandleHello)
 		api.POST("/login", auth.HandleLogin)
 		api.GET("/varify_token", auth.HandleVarifyToken)
+
+		api.POST("/blogs", blogs.HandlePostBlog)
 	}
 
 	router.Run(":8080")
