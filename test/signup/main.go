@@ -8,8 +8,12 @@ import (
 	"github.com/yuqingc/ryze/pkg/auth"
 )
 
+var name = "yuqingc"
+
+var password = "bdmin"
+
 func main() {
-	res, err := auth.WriteUserToDB("admin", "bdmin")
+	res, err := auth.WriteUserToDB(name, password)
 	if err != nil {
 		log.Println(err)
 	}

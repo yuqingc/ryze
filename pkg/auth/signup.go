@@ -21,7 +21,7 @@ func WriteUserToDB(name, password string) (string, error) {
 	}
 	defer db.Close()
 
-	userIns, err := db.Prepare("insert passwd SET username=?, password=?")
+	userIns, err := db.Prepare("insert into passwd SET username=?, password=?")
 	if err != nil {
 		fmt.Println(err)
 		return `prepare failed`, err
