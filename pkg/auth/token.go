@@ -2,6 +2,7 @@ package auth
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 
@@ -20,11 +21,13 @@ func isValidToken(tokenString string) (jwt.MapClaims, bool) {
 	})
 
 	if err != nil {
-		fmt.Println(err)
+		log.Printf("fail to parse jwt:%v", err)
 		return nil, false
 	}
 
 	if tokenClaim, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		// username can be obtained here
+		// fmt.Println("TokenClaim is", tokenClaim["usr"])
 		return tokenClaim, true
 	}
 
@@ -32,6 +35,7 @@ func isValidToken(tokenString string) (jwt.MapClaims, bool) {
 }
 
 // GuardQuery is used for checking whethe a gin.Context contains valid token
+// TODO: rename func
 func GuardQuery(c *gin.Context) (jwt.MapClaims, bool) {
 	userToken := c.GetHeader("Authorization")
 	trimmedTokenString := strings.TrimPrefix(userToken, `Bearer `)
